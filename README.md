@@ -37,7 +37,7 @@ Change into the **global-network** directory `cd wherever_you_are/local_docker_n
 ## 5. Build the Docker containers
 For each Wordpress environment you want to run, change into the directory and run the setup script:
 
- `cd ../wordpress-instance`
+ `cd local_docker_network/wordpress-instance`
  
 Run `sh run-docker.sh`. Here is what will happen:
 
@@ -84,8 +84,10 @@ These are the steps the script will go through to sync your database:
 ## View running containers
 `docker ps`
 
-## Access PHPMyAdmin
-To access PHPMyAdmin, visit local.domain_you_chose.com:8181, or localhost:8181
+## Access phpMyAdmin
+Because we are running a multi-site network, there is no standardized port for phpMyAdmin. First find out what port your instance of phpMyAdmin is running on by running `docker ps`.
+
+Then, you can access your phpMyAdmin panel by going to `<your-local-domain>:<port>` (ex. `local.finddreamjobs.com:8181`).
 
 The root username is `root` and the password is `root`
 
@@ -95,19 +97,45 @@ This is useful if you need to check access/error logs or want to install a serve
 `docker exec -it container_id (or container_name) bash`
 
 ## Shut down and destroy all containers but preserve data
-This will remove all containers but not their databases
+This will remove all containers for a given instance but not their databases.
+
+`cd local-wordpress-directory`
 
 `docker-compose down`
 
-## Shut down and destroy all containers and data
-This will remove all containers and their databases
+## Shut down and destroy all containers, data, and variables
+This will remove all containers and their databases for a given instance.
 
-`docker-compose down --volumes`
+`cd local-wordpress-directory`
+
+`sh destroy-docker.sh`
+
+## Restart a Docker instance
+If something changes with the set up of your Docker instance you will have to restart the containers.
+
+`cd local-wordpress-directory`
+
+`sh reset-docker.sh`
+
+## Restart the entire Docker network
+If something changes in your network set up (such as the addition of an SSL certificate) you will need to restart the network.
+
+First, you will have to change into each Wordpress instance and shut it down using `sh destroy-docker.sh`.
+
+Once all of your Wordpress instances are shut down, change into the **global-network** directory and run the reset script:
+
+`cd ../global-network`
+
+`sh reset-network.sh`
 
 # Tech Stack
-The stack of this local environment is based off of and meant to mirror WPEngine's stack. You can read more about their stack <a href="https://wpengine.com/support/platform-settings/" target="_blank">here</a>.
+The stack of the local Wordpress environments are based off of and meant to mirror WPEngine's stack. You can read more about their stack <a href="https://wpengine.com/support/platform-settings/" target="_blank">here</a>.
 
+# Considerations
 
+- First and foremost, I am by no means a Docker expert. If you find bugs or ways to improve this set up, please create a PR with a message describing the optimizations and I will happily merge. 
+- The `wp-content` folder in this repository is simply a placeholder. If you are setting up a new Wordpress instance on your local machine, make sure to export the site's `wp-content` folder from WPEngine.
+- If you plan on using our Deploybot development pipeline with your Wordpress instance, make sure to use the .gitignore file that is in the `wp-content` folder in this repo. The most important thing there is that you ignore `wp-content/mu-plugins/**` as WPEngine will reject the request because users do not have permissions to update or modify them.
 
 
 
