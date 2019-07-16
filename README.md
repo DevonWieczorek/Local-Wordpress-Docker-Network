@@ -4,26 +4,32 @@ The purpose of this is to allow developers to easily set up a multiple environme
 # What is Docker?
 Docker provides container software that is ideal for developers and teams looking to get started and experimenting with container-based applications. Containers serve as basically a pre-packaged environment with everything an application needs to run, so an application never has to reach outside that pre-built box for it. A developer can build and test a container on their own system, then push it up to a staging or prod server, without having to worry about dependencies or system variables, or about bad interactions with other applications already on the server. 
 
-# Setup
-
-## Nginx:
+# Nginx:
 This Docker network uses Nginx as a reverse-proxy, allowing for multiple custom local domains to run at the same time without having to specify ports. For example, if you want to run a local instance of Find Dream Jobs and a local instance of The Smart Wallet at the same time, Nginx will point local.finddreamjobs and local.thesmartwallet.com to their appropriate Docker containers without any additional consideration.
+
+# SSL:
+
+
+# Setup
 
 ## 1. Install and run Docker
 Download Docker for Desktop <a href="https://www.docker.com/get-started" target="_blank">here</a> and then walk through the installation steps. Once it is installed, make sure Docker is running on your machine.
 
 ## 2. Clone this repository
-`git clone https://github.com/FluentCo/local_wordpress_docker.git`
+`git clone https://github.com/FluentCo/local_docker_network.git`
 
-## 3. Open terminal and change into the `local_wordpress_docker` directory after it is finished cloning.
-`cd wherever_you_are/local_wordpress_docker`
+## 3. Open terminal and change into the `local_docker_network` directory after it is finished cloning.
+`cd wherever_you_are/local_docker_network`
 
-## 4. Build the docker containers
-I have setup a script that will take care of building everything for you, along with prompt you for some additional information. 
+## 4. Set up the Docker network
+Change into the **global-network** directory `cd wherever_you_are/local_docker_network/global-network` and run `sh start-network.sh`.
 
+## 5. Build the Docker containers
+For each Wordpress environment you want to run, change into the directory and run the setup script:
+ `cd ../wordpress-instance`
 Run `sh run-docker.sh`. Here is what will happen:
 
-### a. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default TSW repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
+### a. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default FDJ repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
 ### b. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the ABSOLUTE path to the sql file on your machine.
 ### c. Next, it will go ahead and set up all of the docker containers and images for you.
 ### d. Lastly, it will prompt you to ask what domain you'd like to use to access your local environment. Once entereed, it will update your hosts file to point your localhost to your desired domain.
