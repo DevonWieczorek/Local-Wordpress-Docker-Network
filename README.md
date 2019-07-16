@@ -112,6 +112,8 @@ This will remove all containers and their databases for a given instance.
 
 `sh destroy-docker.sh`
 
+**When shutting down one of the Wordpress instances it is CRUCIAL you run `sh destroy-docker.sh` to shut it down. Our docker-compose.yml and a few other bash scripts use placeholder strings that get replaced when running `sh run/destroy-docker.sh`. Things can break if you use a typical `docker-compose up/down`.**
+
 ## Restart a Docker instance
 If something changes with the set up of your Docker instance you will have to restart the containers.
 
@@ -136,8 +138,10 @@ The stack of the local Wordpress environments are based off of and meant to mirr
 # Considerations
 
 - First and foremost, I am by no means a Docker expert. If you find bugs or ways to improve this set up, please create a PR with a message describing the optimizations and I will happily merge. 
-- The `wp-content` folder in this repository is simply a placeholder. If you are setting up a new Wordpress instance on your local machine, make sure to export the site's `wp-content` folder from WPEngine.
-- If you plan on using our Deploybot development pipeline with your Wordpress instance, make sure to use the .gitignore file that is in the `wp-content` folder in this repo. The most important thing there is that you ignore `wp-content/mu-plugins/**` as WPEngine will reject the request because users do not have permissions to update or modify them.
+
+- The **wp-content** folder in this repository is simply a placeholder. If you are setting up a new Wordpress instance on your local machine, make sure to export the site's **wp-content** folder from WPEngine.
+
+- If you plan on using our Deploybot development pipeline with your Wordpress instance, make sure to use the .gitignore file that is in the **wp-content** folder in this repo. The most important thing there is that you ignore `wp-content/mu-plugins/**` as WPEngine will reject the request because users do not have permissions to update or modify them.
 
 
 
