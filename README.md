@@ -41,26 +41,26 @@ For each Wordpress environment you want to run, change into the directory and ru
  
 Run `sh run-docker.sh`. Here is what will happen:
 
-1. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default FDJ repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
-2. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the ABSOLUTE path to the sql file on your machine.
-3. Next, it will go ahead and set up all of the docker containers and images for you.
-4. Lastly, it will prompt you to ask what domain you'd like to use to access your local environment. Once entereed, it will update your hosts file to point your localhost to your desired domain.
+1. First, you will be prompted to set a few environment variables: production domain, local domain, and a site abbreviation. Local domains should be `local.<production-site-name>` (ex. `local.finddreamjobs.com` or `local.thesmartwallet.com`). Site abbreviations should be **UNIQUE** and be roughly two or three letters (ex. fdj or tsw).
+2. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the **ABSOLUTE** path to the sql file on your machine.
+3. Next, it will go ahead and set up all of the docker containers and images for you (Wordpress, phpMyAdmin, mySQL).
+4. Lastly, it will prompt you to ask what domain you'd like to use to access your local environment. Once entereed, it will update your hosts file to point your localhost to your desired domain. Nginx listens to localhost and directs the browser to whichever container you are trying to access, based on the local domain you specified.
 
-Once the process is complete, you will be able to access your local environment from localhost or whatever domain you entered.
+Once the process is complete, you will be able to access your local environment from whatever domain you entered.
 
 # How to use
 Once Docker is up and running, you will be able to use/view your local environment at the domain you entered when prompted.
 
-In order to edit files, edit them directly in the wp-content folder that is inside of wherever you cloned this repo.
+In order to edit files, edit them directly in the wp-content folder of whichever repo you cloned.
 
-Ex: Repo location - `/Users/joshdarby/Desktop/local_wordpress_docker`
+Ex: Repo location - `/Users/devonwieczorek/Desktop/local_docker_network/<wordpress-instance>`
 
-Ex: wp-content location - `/Users/joshdarby/Desktop/local_wordpress_docker/wp-content`
+Ex: wp-content location - `/Users/devonwieczorek/Desktop/local_docker_network/<wordpress-instance>/wp-content`
 
 To manipulate data inside the Database, see the "Access PHPMyAdmin" section in "Tips & Tricks" below.
 
 If you need to access anything at the server level, see the "SSH into a Docker container" section in "Tips & Tricks" below and
-use the `local_wordpress_docker_wordpress` container. This is the one that houses wordpress, apache, php, etc.
+use the `local_<site-abbreviation>_wordpress` container. This is the one that houses wordpress, apache, php, etc.
 
 If you'd like to destroy your docker environment and clear all local variables set, run `sh destroy-docker.sh`. It is necessary to run this command if you would like to rebuild with a different database.
 
@@ -71,13 +71,13 @@ First and foremost, be sure that your SSH key is added to your WPEngine account 
 
 These are the steps the script will go through to sync your database:
 
-### 1. You will first be prompted for the domain of your local wordpress install (ex: local.thesmartwallet.com). 
+1. The script will attempt to retrieve your local wordpress domain from the .env file. If it cannot find that variable, you will be prompted for the domain of your local wordpress install (ex: `local.finddreamjobs.com`). 
 
-### 2. Next, you will be prompted for the WPEngine install name of the staging environment for the site you want to sync the database from (ex: tswstaging). 
+2. Next, you will be prompted for the WPEngine install name of the staging environment for the site you want to sync the database from (ex: fdjstaging).
 
-### 3. After that, you will be prompted for the production url of the site you are syncing from (ex: https://thesmartwallet.com). This is so that a search and replace can be performed on the local version of your database so all references pointing to the production domain will now point to your local domain. 
+3. After that, the script will either grab your production url from the .env file or you will be prompted for the production url of the site you are syncing from (ex: https://www.finddreamjobs.com). This is so that a search and replace can be performed on the local version of your database so all references pointing to the production domain will now point to your local domain. 
 
-### 4. Once the sync has been finished, you will get a prompt asking if you'd like to save the configuration you just entered. If you choose to do so, you will be able to run the saved configuration by running `sh local.local_domain.com-sync-db.sh`
+4. Once the sync has been finished, you will get a prompt asking if you'd like to save the configuration you just entered. If you choose to do so, you will be able to run the saved configuration by running `sh local.<local_domain.com>-sync-db.sh`
 
 # Tips & Tricks
 
