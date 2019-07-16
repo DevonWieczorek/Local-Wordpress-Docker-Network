@@ -4,11 +4,19 @@ The purpose of this is to allow developers to easily set up a multiple environme
 # What is Docker?
 Docker provides container software that is ideal for developers and teams looking to get started and experimenting with container-based applications. Containers serve as basically a pre-packaged environment with everything an application needs to run, so an application never has to reach outside that pre-built box for it. A developer can build and test a container on their own system, then push it up to a staging or prod server, without having to worry about dependencies or system variables, or about bad interactions with other applications already on the server. 
 
-# Nginx:
+# Nginx
 This Docker network uses Nginx as a reverse-proxy, allowing for multiple custom local domains to run at the same time without having to specify ports. For example, if you want to run a local instance of Find Dream Jobs and a local instance of The Smart Wallet at the same time, Nginx will point local.finddreamjobs and local.thesmartwallet.com to their appropriate Docker containers without any additional consideration.
 
-# SSL:
+# SSL
+We have made a push to secure all of our Wordpress sites and force the HTTPS protocol. Because of this, you'll also have to run your local Wordpress sites as secure. 
 
+This repo already comes with the SSL certificates for the following local domains:
+- 127.0.0.1
+- localhost
+- local.thesmartwallet.com
+- local.finddreamjobs.com
+
+If you need to generate an SSL for a new local domain, change into **global-network** and run `sh mkcert.sh`. You will be prompted for the local domain you wish to generate an SSL for, and then the script will spit it out into the **certs** directory and restart the local network.
 
 # Setup
 
@@ -29,10 +37,10 @@ For each Wordpress environment you want to run, change into the directory and ru
  `cd ../wordpress-instance`
 Run `sh run-docker.sh`. Here is what will happen:
 
-### a. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default FDJ repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
-### b. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the ABSOLUTE path to the sql file on your machine.
-### c. Next, it will go ahead and set up all of the docker containers and images for you.
-### d. Lastly, it will prompt you to ask what domain you'd like to use to access your local environment. Once entereed, it will update your hosts file to point your localhost to your desired domain.
+1. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default FDJ repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
+2. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the ABSOLUTE path to the sql file on your machine.
+3. Next, it will go ahead and set up all of the docker containers and images for you.
+4. Lastly, it will prompt you to ask what domain you'd like to use to access your local environment. Once entereed, it will update your hosts file to point your localhost to your desired domain.
 
 Once the process is complete, you will be able to access your local environment from localhost or whatever domain you entered.
 
