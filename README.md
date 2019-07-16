@@ -18,6 +18,8 @@ This repo already comes with the SSL certificates for the following local domain
 
 If you need to generate an SSL for a new local domain, change into **global-network** and run `sh mkcert.sh`. You will be prompted for the local domain you wish to generate an SSL for, and then the script will spit it out into the **certs** directory and restart the local network.
 
+*Note: You will need to have <a href="https://github.com/FiloSottile/mkcert" target="_blank">mkcert</a> installed on your local machine before you can generate an SSL certificate.*
+
 # Setup
 
 ## 1. Install and run Docker
@@ -34,7 +36,9 @@ Change into the **global-network** directory `cd wherever_you_are/local_docker_n
 
 ## 5. Build the Docker containers
 For each Wordpress environment you want to run, change into the directory and run the setup script:
+
  `cd ../wordpress-instance`
+ 
 Run `sh run-docker.sh`. Here is what will happen:
 
 1. First, it will prompt you for the github repo that you'd like to use. You can choose to use the default FDJ repo, or clone another one. If choosing to clone a different repo, please note this repo should only contain wp-content folders and assets.
