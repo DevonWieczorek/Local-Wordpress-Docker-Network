@@ -32,14 +32,16 @@ Download Docker for Desktop <a href="https://www.docker.com/get-started" target=
 `cd wherever_you_are/local_docker_network`
 
 ## 4. Set up the Docker network
-Change into the **global-network** directory `cd wherever_you_are/local_docker_network/global-network` and run `sh start-network.sh`.
+Change into the **global-network** directory `cd global-network` and run `sh start-network.sh`.
 
 ## 5. Build the Docker containers
 For each Wordpress environment you want to run, change into the directory and run the setup script:
 
  `cd local_docker_network/wordpress-instance`
  
-Run `sh run-docker.sh`. Here is what will happen:
+Run `sh run-docker.sh`. 
+
+Here is what will happen:
 
 1. First, you will be prompted to set a few environment variables: production domain, local domain, and a site abbreviation. Local domains should be `local.<production-site-name>` (ex. `local.finddreamjobs.com` or `local.thesmartwallet.com`). Site abbreviations should be **UNIQUE** and be roughly two or three letters (ex. fdj or tsw).
 2. Second, it will prompt you and ask if you'd like to import a database or create an empty one. If you choose to import an existing database, please be sure to provide the **ABSOLUTE** path to the sql file on your machine.
