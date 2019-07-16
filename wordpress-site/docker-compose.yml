@@ -1,0 +1,61 @@
+version: '3.3'
+
+services:
+   # If service name is the same as the container name (minus 'local_') this may cause conflicts
+   # This is why we use a site abbreviation for each instance
+   SITE_ABBVdb:
+     image: mariadb:10.3
+     volumes:
+       - db_data:/var/lib/mysql
+       - "${local_database_path}:/docker-entrypoint-initdb.d/init.sql"
+     restart: always
+     expose:
+         - 3360
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+       MYSQL_PORT: 3306
+     container_name: local_SITE_ABBV_db
+
+   wordpress:
+     depends_on:
+       - SITE_ABBVdb
+     image: wordpress:5.2.2
+     expose:
+       - 80
+     restart: always
+     environment:
+       VIRTUAL_HOST: local.finddreamjobs.com
+       WORDPRESS_DB_HOST:   SITE_ABBVdb:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+     volumes:
+       - ./docker_ssl_proxy/.htaccess:/var/www/html/.htaccess/:ro
+       - ./wp-content:/var/www/html/wp-content/
+       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+     container_name: local_SITE_ABBV_wordpress
+
+   phpmyadmin:
+    image: corbinu/docker-phpmyadmin
+    ports:
+        - 0:80 # Dynamically allocate port - run `docker ps` to check port
+    links:
+       - SITE_ABBVdb
+    environment:
+       MYSQL_USERNAME: root
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_PORT_3306_TCP_ADDR: SITE_ABBVdb
+       PMA_HOST: SITE_ABBVdb
+       PMA_PORT: 3306
+    container_name: local_SITE_ABBV_phpmyadmin
+
+volumes:
+    db_data:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

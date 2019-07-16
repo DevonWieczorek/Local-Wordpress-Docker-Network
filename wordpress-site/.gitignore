@@ -1,0 +1,4 @@
+wp-content/*
+.DS_Store
+db-backup-sync.sql
+*-sync-db.sh
