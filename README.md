@@ -81,6 +81,9 @@ These are the steps the script will go through to sync your database:
 
 4. Once the sync has been finished, you will get a prompt asking if you'd like to save the configuration you just entered. If you choose to do so, you will be able to run the saved configuration by running `sh local.<local_domain.com>-sync-db.sh`
 
+# Redirect Broken Images
+For images that live on your Production site but not Staging or Development, you will need to reach out to WPEngine to set up a general redirect for you. To learn how, you can follow <a href="https://github.com/FluentCo/local_docker_network/wiki/Special-Redirects">these instructions</a>.
+
 # Tips & Tricks
 
 ## View running containers
