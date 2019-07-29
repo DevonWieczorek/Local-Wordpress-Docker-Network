@@ -147,6 +147,8 @@ The stack of the local Wordpress environments are based off of and meant to mirr
 
 - First and foremost, I am by no means a Docker expert. If you find bugs or ways to improve this set up, please create a PR with a message describing the optimizations and I will happily merge. 
 
+- This set up was created and tested on a Mac. I have been told there are a lot of issues when running the setup on Windows. Whoever can help, please update as needed for Windows and create a PR so that we can support both.
+
 - The **wp-content** folder in this repository is simply a placeholder. If you are setting up a new Wordpress instance on your local machine, make sure to export the site's **wp-content** folder from WPEngine.
 
 - If you plan on using our Deploybot development pipeline with your Wordpress instance, make sure to use the .gitignore file that is in the **wp-content** folder in this repo. The most important thing there is that you ignore `wp-content/mu-plugins/**` as WPEngine will reject the request because users do not have permissions to update or modify them.
