@@ -84,6 +84,11 @@ These are the steps the script will go through to sync your database:
 # Redirect Broken Images
 For images that live on your Production site but not Staging or Development, you will need to reach out to WPEngine to set up a general redirect for you. To learn how, you can follow <a href="https://github.com/FluentCo/local_docker_network/wiki/Special-Redirects">these instructions</a>.
 
+# Set up a Cron Job to Sync the Database
+In order to make sure our Development and Staging environments accurately reflect the Production environment, we have a cron job that backs up the production database daily and imports it into the other environments.
+
+To set up this job in Gitlab, follow <a href="https://github.com/FluentCo/local_docker_network/wiki/Scheduled-Database-Sync">this tutorial</a>.
+
 # Tips & Tricks
 
 ## View running containers
