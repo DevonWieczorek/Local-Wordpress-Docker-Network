@@ -25,30 +25,8 @@ echo "Copied SQL file successfully."
 cat db-backup-sync.sql | docker exec -i local_${site_abbreviation}_db /usr/bin/mysql -u root --password=root wordpress
 echo "Imported SQL file to database successfully."
 
-# Check if production url is set as an env var
-if [[ ! -z $production_url ]]
-    then
-    wpengine_domain=$production_url
-else
-    echo ""
-    echo "Enter in the PRODUCTION WPENGINE domain for this db WITHOUT the trailing slash"
-    echo "This is needed to do a search and replace in the db with your local domain"
-    echo "ex: https://www.finddreamjobs.com"
-    read wpengine_domain
-fi
-
-# start bash session on local db container so we can search and replace inside new sql file
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_options SET option_value = replace(option_value, \"$wpengine_domain\", \"https://$container_domain\") WHERE option_name = \"home\" OR option_name = \"siteurl\"';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_posts SET post_content = replace(post_content, \"$wpengine_domain\", \"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_postmeta SET meta_value = replace(meta_value,\"$wpengine_domain\",\"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_usermeta SET meta_value = replace(meta_value, \"$wpengine_domain\",\"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_links SET link_url = replace(link_url, \"$wpengine_domain\",\"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_comments SET comment_content = replace(comment_content , \"$wpengine_domain\",\"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_posts SET post_content = replace(post_content, \"$wpengine_domain\", \"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_links SET link_image = replace(link_image, \"$wpengine_domain\",\"https://$container_domain\")';"
-docker exec -it local_${site_abbreviation}_db sh -c "mysql -u root -proot wordpress -e 'UPDATE wp_posts SET guid = replace(guid, \"$wpengine_domain\",\"https://$container_domain\")';"
-
-echo "replaced all old url references successfully."
+# Run the search & replace script
+sh update-db-url.sh
 
 # Prompt user to save configuration
 echo "Do you want to save this configuration?"

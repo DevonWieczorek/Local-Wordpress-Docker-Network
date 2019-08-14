@@ -36,7 +36,19 @@ services:
        - ./docker_ssl_proxy/.htaccess:/var/www/html/.htaccess/:ro
        - ./wp-content:/var/www/html/wp-content/
        - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+       - wp_data:/var/www/html
      container_name: local_SITE_ABBV_wordpress
+
+   wp-cli:
+     depends_on:
+       - SITE_ABBVdb
+       - wordpress
+     links:
+        - SITE_ABBVdb
+     image: conetix/wordpress-with-wp-cli
+     volumes:
+       - wp_data:/var/www/html
+     container_name: local_SITE_ABBV_wpcli
 
    phpmyadmin:
     image: corbinu/docker-phpmyadmin
@@ -54,6 +66,7 @@ services:
 
 volumes:
     db_data:
+    wp_data:
 
 networks:
   default:
