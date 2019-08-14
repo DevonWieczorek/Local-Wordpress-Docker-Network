@@ -13,7 +13,7 @@ echo "ex: fdjstaging"
 read wpengine_sitename
 
 # copy exported sql file to local machine
-scp $wpengine_sitename@$wpengine_sitename.ssh.wpengine.net:/sites/$wpengine_sitename/db-backup-sync.sql db-backup-sync.sql
+scp ${wpengine_sitename}@${wpengine_sitename}.ssh.wpengine.net:/sites/${wpengine_sitename}/db-backup-sync.sql db-backup-sync.sql
 
 echo "copied sql file successfully."
 
@@ -58,6 +58,6 @@ if [ $save_configuration = "yes" ]; then
     sudo sed -i '' 's,$wpengine_domain,'$wpengine_domain',g' $container_domain-sync-db.sh
 
     echo "you can now run this configuration from $container_domain-sync-db.sh"
-    echo "ex: sh $container_domain.com-sync-db.sh"
+    echo "ex: sh $container_domain-sync-db.sh"
 
 fi
